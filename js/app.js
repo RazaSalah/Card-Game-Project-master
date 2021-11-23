@@ -26,6 +26,7 @@ const timer = document.getElementById("timer");
 let time = 0;
 let timerId = 0;
 let timeout = true;
+let firstClick =false;
 //for the restart icon , for restarting the game
 const restart = document.getElementById("restart");
 //for the cards
@@ -33,7 +34,7 @@ let CardsOpened = [];
 const matchCards = [];
 
 //functions
-/*const startClock = () => {
+const startClock = () => {
   timeout = false;
   timerId = setInterval(() => {
     time++;
@@ -62,19 +63,12 @@ const stopClock = () => {
 
 //moves function
 const movesCounter = () => {
+
   movesCount++;
   moves.innerHTML = `${movesCount} moves`;
-  if(movesCount==16){
-    heartCount =2;
-    
-  }else if(movesCount==32){
-    heartCount=1;
-   
-  }else if (movesCount== 48){
-    heartCount = 0;
-   
-  }
-}*/
+
+}
+
 //since we are having the event listener on the section we need to make sure that the click is valid only on the cards
 //the cards set as valid when the array length is less than 2 + doesn't contain the match + there are no cards in the array + if the clicked contains the card class
 
@@ -125,16 +119,22 @@ cardsOpen.addEventListener("click", function (event) {
     if (CardsOpened.length == 2) {
       checkMatch();
     }
+    movesCounter();
   }
-  /*startClock();
-  movesCounter();*/
+  if(!firstClick){
+  startClock();
+  }
+  firstClick=true;
+  
 });
 
-/*restart.addEventListener("click", function (event) {
+restart.addEventListener("click", function (event) {
   stopClock();
+  firstClick = false ;
   timeout = true;
   time = 0;
-  movesCount = 0;
   timeupdate();
-  movesCounter();
-});*/
+  movesCount = 0;
+  moves.innerHTML = `${movesCount} moves`;
+ 
+});
