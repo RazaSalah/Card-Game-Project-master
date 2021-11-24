@@ -16,7 +16,7 @@ function shuffle(array) {
 
 // variable
 //for the heart level
-const heart = document.getElementById("heart");
+const heart = document.querySelector("#heart");
 let heartCount = 3;
 //for the moves
 const moves = document.getElementById("moves");
@@ -26,12 +26,12 @@ const timer = document.getElementById("timer");
 let time = 0;
 let timerId = 0;
 let timeout = true;
-let firstClick =false;
+let firstClick = false;
 //for the restart icon , for restarting the game
 const restart = document.getElementById("restart");
 //for the cards
 let CardsOpened = [];
-const matchCards = [];
+let matchCards = [];
 
 //functions
 const startClock = () => {
@@ -63,11 +63,21 @@ const stopClock = () => {
 
 //moves function
 const movesCounter = () => {
-
   movesCount++;
   moves.innerHTML = `${movesCount} moves`;
-
-}
+ 
+  if(movesCount == 16){
+    heart.firstElementChild.outerHTML = "";		
+    heartCount--;
+    console.log(heartCount);
+  } else if(movesCount == 32){
+    heart.firstElementChild.outerHTML = "";	
+    heartCount--;
+  } else if(movesCount == 48){
+    heart.firstElementChild.outerHTML = "";	
+    heartCount--;
+  }
+};
 
 //since we are having the event listener on the section we need to make sure that the click is valid only on the cards
 //the cards set as valid when the array length is less than 2 + doesn't contain the match + there are no cards in the array + if the clicked contains the card class
@@ -77,12 +87,11 @@ function clickValidation(card) {
     CardsOpened.length < 2 &&
     card.classList.contains("card") &&
     !card.classList.contains("match") &&
-    !CardsOpened.includes(card)) 
-  {
+    !CardsOpened.includes(card)
+  ) {
     console.log(card);
     return true;
-  } else 
-  return false;
+  } else return false;
 }
 //we need an array to store the opened card , this array will be used to compare the match
 function cardsArray(card) {
@@ -95,6 +104,8 @@ function checkMatch() {
   ) {
     CardsOpened[0].classList.add("match");
     CardsOpened[1].classList.add("match");
+    matchCards.push(...CardsOpened)
+    console.log(matchCards.length)
     CardsOpened = [];
   } else {
     console.log("error");
@@ -105,6 +116,9 @@ function checkMatch() {
       CardsOpened = [];
     }, 1000);
   }
+}
+function resetMatch(){
+
 }
 
 // event listeners
@@ -121,20 +135,24 @@ cardsOpen.addEventListener("click", function (event) {
     }
     movesCounter();
   }
-  if(!firstClick){
-  startClock();
+  if (!firstClick) {
+    startClock();
   }
-  firstClick=true;
-  
+  firstClick = true;
 });
 
 restart.addEventListener("click", function (event) {
   stopClock();
-  firstClick = false ;
+  firstClick = false;
   timeout = true;
   time = 0;
   timeupdate();
+  resetMatch();
   movesCount = 0;
+  heartCount =3;
+  heart.innerHTML=` <li><i class="bi bi-heart-fill"></i></li>
+  <li><i class="bi bi-heart-fill"></i></li>
+  <li><i class="bi bi-heart-fill"></i></li>`
   moves.innerHTML = `${movesCount} moves`;
- 
 });
+
