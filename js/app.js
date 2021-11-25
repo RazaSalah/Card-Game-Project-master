@@ -17,6 +17,7 @@ function shuffle(array) {
 // variable
 //for the heart level
 const heart = document.querySelector("#heart");
+
 let heartCount = 3;
 //for the moves
 const moves = document.getElementById("moves");
@@ -149,7 +150,7 @@ reShuffle()*/
 function gameFinished() {
   setTimeout(function () {
     if (matchCards.length == 16) {
-      overlay.classList.add("active");
+      overlay.classList.add("end");
       document.querySelector(".win").classList.add("visible");
       stopClock();
       firstClick = false;
@@ -157,8 +158,11 @@ function gameFinished() {
       movesCount = 0;
       GameTime();
       let heartNo = heart.innerHTML;
-      console.log(heartNo)
+      const heartParent = document.querySelector("#heartcount");
+      heartParent.setAttribute("style" ,"display: flex; justify-content:center")
       displayGameHeart.innerHTML = heartNo;
+      displayGameHeart.style.listStyle="none";
+
 
     }
   }, 500);
@@ -213,7 +217,7 @@ restart.addEventListener("click", function (event) {
 });
 const exit = document.querySelector(".close-butten");
 exit.addEventListener("click" , function(event){
-  overlay.classList.remove("active");
+  overlay.classList.remove("end");
   document.querySelector(".win").classList.remove("visible");
   stopClock();
   firstClick = false;
@@ -233,7 +237,7 @@ exit.addEventListener("click" , function(event){
 });
 const tryAgain = document.querySelector("#tryAgain");
 tryAgain.addEventListener("click" , function(event){
-  overlay.classList.remove("active");
+  overlay.classList.remove("end");
   document.querySelector(".win").classList.remove("visible");
   stopClock();
   firstClick = false;
