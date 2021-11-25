@@ -32,6 +32,11 @@ const restart = document.getElementById("restart");
 //for the cards
 let CardsOpened = [];
 let matchCards = [];
+//for the popup
+const displayGameTime = document.querySelector("#timecount");
+const displayGameMove = document.querySelector("#movescount");
+const displayGameHeart = document.querySelector("#heartcount");
+const overlay = document.querySelector("#overlay");
 
 //functions
 const startClock = () => {
@@ -65,18 +70,24 @@ const stopClock = () => {
 const movesCounter = () => {
   movesCount++;
   moves.innerHTML = `${movesCount} moves`;
- 
-  if(movesCount == 16){
-    heart.firstElementChild.outerHTML = "";		
-    heartCount--;
-    console.log(heartCount);
-  } else if(movesCount == 32){
-    heart.firstElementChild.outerHTML = "";	
-    heartCount--;
-  } else if(movesCount == 48){
-    heart.firstElementChild.outerHTML = "";	
-    heartCount--;
-  }
+
+  heartCounter();
+
+};
+
+const heartCounter =() =>{
+
+  if (movesCount == 16) {
+    heart.firstElementChild.style.display="none";
+      heartCount--;
+      console.log(heartCount);
+    } else if (movesCount == 32) {
+      heart.firstElementChild.style.display="none";
+      heartCount--;
+    } else if (movesCount == 48) {
+      heart.firstElementChild.style.display="none";
+      heartCount--;
+    }
 };
 
 //since we are having the event listener on the section we need to make sure that the click is valid only on the cards
@@ -104,8 +115,9 @@ function checkMatch() {
   ) {
     CardsOpened[0].classList.add("match");
     CardsOpened[1].classList.add("match");
-    matchCards.push(...CardsOpened)
-    console.log(matchCards.length)
+    matchCards.push(...CardsOpened);
+    console.log(matchCards.length);
+    gameFinished();
     CardsOpened = [];
   } else {
     console.log("error");
@@ -117,8 +129,50 @@ function checkMatch() {
     }, 1000);
   }
 }
-function resetMatch(){
 
+
+function resetMatch(){
+  for(card of deck.children){
+    card.classList.remove("match", "open");
+  }
+}
+
+/*function reShuffle(){
+  let gameCards = deck.children;
+  let shuffledArray = shuffle(Array.from(gameCards));
+  deck.replaceChildren(...shuffledArray)
+  
+}
+reShuffle()*/
+
+
+function gameFinished() {
+  setTimeout(function () {
+    if (matchCards.length == 16) {
+      overlay.classList.add("active");
+      document.querySelector(".win").classList.add("visible");
+      stopClock();
+      firstClick = false;
+      displayGameMove.innerHTML = `Moves ${movesCount}`;
+      movesCount = 0;
+      GameTime();
+      let heartNo = heart.innerHTML;
+      console.log(heartNo)
+      displayGameHeart.innerHTML = heartNo;
+
+    }
+  }, 500);
+}
+
+function GameTime() {
+  const min = Math.floor(time / 60);
+  const sec = time % 60;
+
+  if (sec < 10) {
+    displayGameTime.innerHTML = `You finished the game within ${min}:0${sec}`;
+  } else {
+    displayGameTime.innerHTML = `You finished the game within ${min}:${sec}`;
+  }
 }
 
 // event listeners
@@ -132,8 +186,9 @@ cardsOpen.addEventListener("click", function (event) {
     cardsArray(event.target);
     if (CardsOpened.length == 2) {
       checkMatch();
+      movesCounter();
     }
-    movesCounter();
+    
   }
   if (!firstClick) {
     startClock();
@@ -148,11 +203,51 @@ restart.addEventListener("click", function (event) {
   time = 0;
   timeupdate();
   resetMatch();
+  //reShuffle();
+  CardsOpened = [];
   movesCount = 0;
-  heartCount =3;
-  heart.innerHTML=` <li><i class="bi bi-heart-fill"></i></li>
-  <li><i class="bi bi-heart-fill"></i></li>
-  <li><i class="bi bi-heart-fill"></i></li>`
   moves.innerHTML = `${movesCount} moves`;
+  heartCount = 3;
+  heart.firstElementChild.style.display="block";
+  
 });
+const exit = document.querySelector(".close-butten");
+exit.addEventListener("click" , function(event){
+  overlay.classList.remove("active");
+  document.querySelector(".win").classList.remove("visible");
+  stopClock();
+  firstClick = false;
+  timeout = true;
+  time = 0;
+  timeupdate();
+  resetMatch();
+  //reShuffle();
+  CardsOpened = [];
+  matchCards =[];
+  movesCount = 0;
+  moves.innerHTML = `${movesCount} moves`;
+  heartCount = 3;
+  heart.firstElementChild.style.display="block";
+ 
 
+});
+const tryAgain = document.querySelector("#tryAgain");
+tryAgain.addEventListener("click" , function(event){
+  overlay.classList.remove("active");
+  document.querySelector(".win").classList.remove("visible");
+  stopClock();
+  firstClick = false;
+  timeout = true;
+  time = 0;
+  timeupdate();
+  resetMatch();
+  //reShuffle();
+  CardsOpened = [];
+  matchCards =[];
+  movesCount = 0;
+  moves.innerHTML = `${movesCount} moves`;
+  heartCount = 3;
+  heart.firstElementChild.style.display="block";
+ 
+
+});
