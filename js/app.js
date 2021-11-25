@@ -138,13 +138,13 @@ function resetMatch(){
   }
 }
 
-/*function reShuffle(){
+function reShuffle(){
   let gameCards = deck.children;
   let shuffledArray = shuffle(Array.from(gameCards));
   deck.replaceChildren(...shuffledArray)
   
 }
-reShuffle()*/
+reShuffle()
 
 
 function gameFinished() {
@@ -207,7 +207,7 @@ restart.addEventListener("click", function (event) {
   time = 0;
   timeupdate();
   resetMatch();
-  //reShuffle();
+  reShuffle();
   CardsOpened = [];
   movesCount = 0;
   moves.innerHTML = `${movesCount} moves`;
@@ -225,7 +225,7 @@ exit.addEventListener("click" , function(event){
   time = 0;
   timeupdate();
   resetMatch();
-  //reShuffle();
+  reShuffle();
   CardsOpened = [];
   matchCards =[];
   movesCount = 0;
@@ -245,7 +245,7 @@ tryAgain.addEventListener("click" , function(event){
   time = 0;
   timeupdate();
   resetMatch();
-  //reShuffle();
+  reShuffle();
   CardsOpened = [];
   matchCards =[];
   movesCount = 0;
