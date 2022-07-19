@@ -10,5 +10,5 @@ otherwise the cards will be face down again.
 * CSS
 * JavaScript
 
-# <img src="img/cards_game.png" width="50px">
-# <img src="img/cards_game_win.png" width="50px">
+# <img src="img/cards_game">
+# <img src="img/cards_game_win">
